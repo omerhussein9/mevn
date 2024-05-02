@@ -39,7 +39,6 @@
 
           // If login successful, redirect to dashboard or desired page
           this.$router.push({ name: 'home' });
-          location.reload()
         } catch (error) {
           this.loginError = 'Failed to login. Please check your credentials and try again.';
         }

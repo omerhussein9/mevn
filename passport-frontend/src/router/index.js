@@ -35,10 +35,11 @@ const routes = [
       import("../views/DeleteView.vue"),
   },
   {
-    path: "/details",
+    path: "/details/:eventType",
     name: "details",
     component: () =>
       import("../views/DetailsView.vue"),
+    props: true
   },
   {
     path: "/register",

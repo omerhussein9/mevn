@@ -164,7 +164,6 @@
                     })
 
                     alert(`Successfully deleted league ${selectedLeague.value.name}.`)
-                    // location.reload()
                 } catch(ex) {
                     console.error('error deleting league', ex)
                 }

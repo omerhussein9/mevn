@@ -85,6 +85,11 @@
       return {
         token
       }
+    },
+    computed: {
+      notLoggedIn() {
+        return !this.token
+      }
     }
   }
 </script>

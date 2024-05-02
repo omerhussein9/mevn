@@ -4,8 +4,8 @@ import { ref, onMounted, computed } from 'vue';
 import AuthService from '@/services/AuthService'
 import router from '@/router'
 
-// const API_URL = 'http://localhost:3000'
-const API_URL = 'https://mevn-backend-5aq7.onrender.com'
+const API_URL = 'http://localhost:3000'
+// const API_URL = 'https://mevn-backend-5aq7.onrender.com'
 
 export default {
   setup() {
@@ -108,16 +108,17 @@ export default {
 
         alert('Successfully deleted event.')
 
-        location.reload()
+        // Update the events list directly
+        const updatedEvents = events.value.filter(event => event !== ev)
+        events.value = updatedEvents
       } catch(ex) {
         console.error('error deleting events,', ex)
       }
     }
 
     const sendToDetails = (ev) => {
-      if(!deleting.value) {
-        localStorage.setItem('event', ev.type)
-        router.push({ name: 'details' })
+      if (!deleting.value) {
+        router.push({ name: 'details', params: { eventType: ev.type } })
       }
     }
 

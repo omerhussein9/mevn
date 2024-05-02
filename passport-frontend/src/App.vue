@@ -11,8 +11,8 @@
       <div class="navbar-start">
         <router-link class="navbar-item" to="/">Home</router-link>
         <router-link class="navbar-item" to="/events">Events</router-link>
-        <router-link class="navbar-item" to="/create" v-show="token && token.role === 'admin'">Create</router-link>
-        <router-link class="navbar-item" to="/delete" v-show="token && token.role === 'admin'">Delete</router-link>
+        <router-link class="navbar-item" to="/create" v-show="showAdminLinks">Create</router-link>
+        <router-link class="navbar-item" to="/delete" v-show="showAdminLinks">Delete</router-link>
       </div>
 
       <div class="navbar-end">
@@ -24,7 +24,7 @@
               </router-link>
               <strong v-else @click="logout" style="color: navy">Logout</strong>
             </div>
-            <div class="button is-link is-dark">
+            <div class="button is-link is-dark" v-if="!isLoggedIn">
               <router-link to="/register"><strong style="color: navy">Register</strong></router-link>
             </div>
           </div>
@@ -58,6 +58,9 @@
       username() {
         // Optionally, you can display the username if available
         return this.$store.state.user.username; // Example for Vuex
+      },
+      showAdminLinks() {
+        return this.isLoggedIn && this.token.role === 'admin';
       }
     },
     methods: {
@@ -67,7 +70,6 @@
           await this.$store.dispatch('logoutUser')
 
           this.$router.push({ name: 'home' })
-          location.reload()
         } catch(ex) {
           console.error('error with logging out: ' + ex)
         }
