@@ -3,7 +3,9 @@ const enviro = require('dotenv')
 enviro.config()
 
 // Replace <password> with your MongoDB Atlas password
-const mongoURI = `mongodb+srv://ohussein:sports123@sportscluster.bp9ooxj.mongodb.net/?retryWrites=true&w=majority&appName=sportscluster`;
+const mongoURI = `mongodb+srv://ohussein:sports123@sportscluster.bp9ooxj.mongodb.net/sportsdb?retryWrites=true&w=majority&appName=sportscluster&connectTimeoutMS=30000&socketTimeoutMS=30000`;
+// mongodb://ohussein:sports123@<hostname>:<port>/<database>?retryWrites=true&w=majority&connectTimeoutMS=30000&socketTimeoutMS=30000
+
 
   const connectToMongoDB = async (uri) => {
     try {

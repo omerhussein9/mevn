@@ -1,7 +1,8 @@
 // Import Axios for making HTTP requests
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3000'; // Replace this with your backend API URL
+// const API_URL = 'http://localhost:3000'; // Replace this with your backend API URL
+const API_URL = 'https://mevn-backend-5aq7.onrender.com'
 
 const AuthService = {
   async login(credentials) {

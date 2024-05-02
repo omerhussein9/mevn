@@ -126,7 +126,8 @@ import { ref, onMounted, computed } from 'vue';
 import { useStore } from 'vuex'
 import AuthService from '@/services/AuthService'
 
-const API_URL = 'http://localhost:3000'
+// const API_URL = 'http://localhost:3000'
+const API_URL = 'https://mevn-backend-5aq7.onrender.com'
 
 export default {
     setup() {

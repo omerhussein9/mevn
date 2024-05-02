@@ -4,7 +4,8 @@
     import AuthService from '@/services/AuthService'
     import router from '@/router'
 
-    const API_URL = 'http://localhost:3000'
+    // const API_URL = 'http://localhost:3000'
+    const API_URL = 'https://mevn-backend-5aq7.onrender.com'
 
     export default {
         setup() {
