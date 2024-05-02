@@ -13,9 +13,6 @@ const bodyParser = require('body-parser')
 const cron = require('node-cron')
 const nodemailer = require('nodemailer')
 
-const path = require('path');
-app.use(express.static(path.join(__dirname, '../passport-frontend/dist')));
-
 // Initialize Express app
 const app = express();
 app.use(cors()); // Enable CORS for all routes
