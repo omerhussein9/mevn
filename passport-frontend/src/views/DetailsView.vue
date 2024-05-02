@@ -1,5 +1,5 @@
 <template>
-    <div class="section is-flex is-justify-content-left" style="padding-bottom: 0px">
+    <div class="section is-flex is-justify-content-left">
         <h1 class="title">Details</h1>
     </div>
     <Suspense>
@@ -97,8 +97,23 @@
                             <input class="input" id="address" v-model="latitude"/>
                         </div>
                     </div>
+                    <button @click="editEvent" class="button is-primary">Submit</button>
+                </fieldset>
 
-                    <button @click="editEvent" class="button is-primary" style="margin-bottom: 10px">Submit</button>
+                <fieldset class="field section" :disabled="!token" style="padding-bottom: 0px; margin-bottom: 10px">
+                    <div class="text is-flex" style="padding:0px">
+                        <strong>Notify Me</strong>
+                    </div>
+                    <div class="control" @click="changePreference">
+                        <label class="radio">
+                            <input type="radio" name="yesno"/>
+                            Yes
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="yesno"/>
+                            No
+                        </label>
+                    </div>
                 </fieldset>
             </div>
         </div>
@@ -107,7 +122,8 @@
 
 <script>
 import axios from 'axios';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useStore } from 'vuex'
 import AuthService from '@/services/AuthService'
 
 const API_URL = 'http://localhost:3000'
@@ -176,7 +192,8 @@ export default {
                     team2: selectedTeam2.value.name,
                     longitude: longitude.value,
                     latitude: latitude.value,
-                    type: ev.value.type
+                    type: ev.value.type,
+                    emails: ev.value.emails
                 })
 
                 alert('Successfully edited the event.')
@@ -184,7 +201,38 @@ export default {
             } catch(ex) {
                 console.error('error with patching event', ex)
             }
+        }
 
+        const store = useStore()
+        const loggedIn = computed(() => store.getters.currentUser)
+
+        const changePreference = async () => {
+            try {
+                await axios.delete(`${API_URL}/api/events`, {
+                    data: {
+                        id: ev.value.type
+                    }
+                })
+
+                let users = ev.value.emails
+                users.push(loggedIn.value.email)
+                console.log(users)
+
+                await axios.post(`${API_URL}/api/events`, {
+                    place: ev.value.place,
+                    date: ev.value.date,
+                    time: ev.value.time,
+                    address: ev.value.address,
+                    team1: ev.value.team1,
+                    team2: ev.value.team2,
+                    longitude: ev.value.longitude,
+                    latitude: ev.value.latitude,
+                    type: ev.value.type,
+                    emails: users
+                })
+            } catch(ex) {
+                console.error(ex)
+            }
         }
 
         return {
@@ -201,7 +249,8 @@ export default {
             address,
             longitude,
             latitude,
-            time
+            time,
+            changePreference
         }
     }
 }

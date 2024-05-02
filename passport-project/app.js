@@ -13,6 +13,9 @@ const bodyParser = require('body-parser')
 const cron = require('node-cron')
 const nodemailer = require('nodemailer')
 
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../passport-frontend/dist')));
+
 // Initialize Express app
 const app = express();
 app.use(cors()); // Enable CORS for all routes
@@ -135,33 +138,6 @@ app.delete('/api/events', async (req, res) => {
   }
 })
 
-// app.patch('/api/events', async (req, res) => {
-//   try {
-//     await Event.updateOne(
-//       {
-//         "type": req.body.id
-//       },
-//       {
-//         $set: {
-//           "place": req.body.placeNew,
-//           "date": req.body.dateNew,
-//           "time": req.body.timeNew,
-//           "address": req.body.addressNew,
-//           "team1": req.body.team1New,
-//           "team2": req.body.team2New,
-//           "longitude": req.body.longitude,
-//           "latitude": req.body.latitude
-//         }
-//       }
-//     )   
-    
-//     res.status(200).json({ message: 'event successfully patched nice' })
-//   } catch(ex) {
-//     res.status(500).json({ error: err.message })
-//   }
-// })
-
-
 // adding leagues to the APIs
 const League = require('./models/League');
 
@@ -250,24 +226,23 @@ cron.schedule('0 0 * * *', async () => {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const e = await Event.find({ date: today.toJSON().slice(0, 10) })
+  const events = await Event.find({ date: today.toJSON().slice(0, 10) })
 
-  e.forEach(async (event) => {
+  events.forEach(async (event) => {
     // Find users who requested notifications for this event
-    // const users = await User.find({ /* Add query criteria for user preferences */ });
+    const users = event.emails
 
-    // // Send email notifications to users
-    // users.forEach((user) => {
-    //   transporter.sendMail({
-    //     from: 'your-email@gmail.com',
-    //     to: user.email,
-    //     subject: `Reminder: ${event.name} Today!`,
-    //     text: `Don't forget, ${event.name} is happening today!`,
-    //   });
-    // });
+    // Send email notifications to users
+    for (const user of users) {
+      await transporter.sendMail({
+        from: 'ics4umailer@gmail.com',
+        to: user,
+        subject: `Reminder: ${event.team1} vs ${event.team2} Today!`,
+        text: `Don't forget, ${event.team1} vs ${event.team2} is happening today!`,
+      });
+    }
   })
 })
-
 
 // Start the server
 const PORT = process.env.PORT || 3000;

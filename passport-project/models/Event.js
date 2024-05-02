@@ -40,6 +40,10 @@ const EventSchema = new mongoose.Schema({
   notes: {
     type: String,
     required: false
+  },
+  emails: {
+    type: [String],
+    required: false
   }
 });
 

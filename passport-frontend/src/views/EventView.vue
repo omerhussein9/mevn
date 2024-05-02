@@ -106,6 +106,7 @@ export default {
         })
 
         alert('Successfully deleted event.')
+
         location.reload()
       } catch(ex) {
         console.error('error deleting events,', ex)
@@ -113,8 +114,10 @@ export default {
     }
 
     const sendToDetails = (ev) => {
-      localStorage.setItem('event', ev.type)
-      router.push({ name: 'details' })
+      if(!deleting.value) {
+        localStorage.setItem('event', ev.type)
+        router.push({ name: 'details' })
+      }
     }
 
     return {

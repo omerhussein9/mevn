@@ -69,7 +69,8 @@
                         team1: team1,
                         team2: team2,
                         longitude: longitude,
-                        latitude: latitude
+                        latitude: latitude,
+                        emails: []
                     })
 
 
